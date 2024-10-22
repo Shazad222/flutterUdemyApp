@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pdf_viewer_app/view/screens/authentication_screen/register_screen.dart';
+import 'package:pdf_viewer_app/controllers/auth_controller.dart';
+import 'package:pdf_viewer_app/view/screens/authentication_screen/Login_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = AuthController();
+  late String email;
+  late String fullName;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +25,14 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: Text(
-                      "Login Your Account",
-                      style: GoogleFonts.getFont(
-                        "Lato",
-                        color: Color(0xff0d120E),
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.2,
-                        fontSize: 23,
-                      ),
+                  Text(
+                    "Create Your Account",
+                    style: GoogleFonts.getFont(
+                      "Lato",
+                      color: Color(0xff0d120E),
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.2,
+                      fontSize: 23,
                     ),
                   ),
                   Text(
@@ -47,23 +51,29 @@ class LoginScreen extends StatelessWidget {
                     width: 200,
                     height: 200,
                   ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Email",
-                      style: GoogleFonts.getFont(
-                        "Lato",
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Email",
+                        style: GoogleFonts.getFont(
+                          "Lato",
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                     ),
                   ),
                   TextFormField(
+                    onChanged: (value) {
+                      email = value;
+                    },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "please Enter your email";
+                        return "enter your email";
                       } else {
-                        return (null);
+                        return null;
                       }
                     },
                     decoration: InputDecoration(
@@ -74,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
-                      labelText: "enter your email",
+                      labelText: " Enter you email",
                       labelStyle: GoogleFonts.getFont(
                         "Nunito Sans",
                         fontSize: 14,
@@ -90,15 +100,29 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Full Name",
+                        style: GoogleFonts.getFont(
+                          "Lato",
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ),
                   ),
                   TextFormField(
+                    onChanged: (value) {
+                      fullName = value;
+                    },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return ("Please enter you correct password");
+                        return "enter your full name";
                       } else {
-                        print(null);
+                        return null;
                       }
                     },
                     decoration: InputDecoration(
@@ -109,7 +133,56 @@ class LoginScreen extends StatelessWidget {
                       ),
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
-                      labelText: "enter your Password",
+                      labelText: "Enter your Full Name",
+                      labelStyle: GoogleFonts.getFont(
+                        "Nunito Sans",
+                        fontSize: 14,
+                        letterSpacing: 0.1,
+                      ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(
+                          "assets/icons/user.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Password",
+                        style: GoogleFonts.getFont(
+                          "Lato",
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
+                      password = value;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "enter your Password";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      labelText: "Enter your password",
                       labelStyle: GoogleFonts.getFont(
                         "Nunito Sans",
                         fontSize: 14,
@@ -130,11 +203,16 @@ class LoginScreen extends StatelessWidget {
                     height: 20,
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        print("Pass");
+                        await _authController.signUpUser(
+                            context: context,
+                            email: email,
+                            fullName: fullName,
+                            password: password);
+                        print("clicked");
                       } else {
-                        print("Error");
+                        print("Faild");
                       }
                     },
                     child: Container(
@@ -233,7 +311,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              "Sign In",
+                              "Sign Up",
                               style: GoogleFonts.getFont(
                                 "Lato",
                                 color: Colors.white,
@@ -253,7 +331,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Need an Account?",
+                        "Already an Account?",
                         style: GoogleFonts.roboto(
                           color: Color(0xFF103DE5),
                           letterSpacing: 1,
@@ -261,13 +339,17 @@ class LoginScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () => {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RegisterScreen();
-                          }))
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return LoginScreen();
+                              },
+                            ),
+                          ),
                         },
                         child: Text(
-                          "Sign Up",
+                          "Sign In",
                           style: GoogleFonts.roboto(
                               color: Color(
                             0xFF103D35,
