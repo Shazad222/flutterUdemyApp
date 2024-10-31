@@ -4,7 +4,10 @@ const PORT = 3000;
 const express = require("express");
 const mongoose = require("mongoose");
 const authRouter = require("./routes/auth"); // Ensure correct import
-// const bannerRouter = require("./routes/banner");
+const bannerRouter = require("./routes/banner");
+const categoryRouter = require("./routes/category");
+const productRouter = require("./routes/product");
+const subcategoryRouter = require("./routes/sub_category");
 // Create an instance of an express application
 const app = express();
 
@@ -17,7 +20,10 @@ app.use(express.json());
 
 // Register auth routes
 app.use(authRouter);
-// app.use(bannerRouter),
+app.use(bannerRouter);
+app.use(categoryRouter);
+app.use(subcategoryRouter);
+app.use(productRouter);
 // Connect to MongoDB
 
 mongoose
