@@ -8,6 +8,9 @@ const bannerRouter = require("./routes/banner");
 const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
 const subcategoryRouter = require("./routes/sub_category");
+const productReviewRouter = require("./routes/product_review");
+const cors = require("cors");
+
 // Create an instance of an express application
 const app = express();
 
@@ -17,6 +20,7 @@ const DB =
 
 // Middleware to parse JSON data
 app.use(express.json());
+app.use(cors());// enable cors for all route and origins
 
 // Register auth routes
 app.use(authRouter);
@@ -24,6 +28,7 @@ app.use(bannerRouter);
 app.use(categoryRouter);
 app.use(subcategoryRouter);
 app.use(productRouter);
+app.use(productReviewRouter);
 // Connect to MongoDB
 
 mongoose
